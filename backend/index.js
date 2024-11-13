@@ -4,12 +4,12 @@ const Hapi = require('@hapi/hapi');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 const { Review } = require('./schemas.js');
-
+require('dotenv').config();
 
 const init = async () => {
 
     // Connect to MongoDB
-    await mongoose.connect(mongoURI);
+    await mongoose.connect(process.env.MONGOURI);
     console.log('Connected to MongoDB');
 
     const server = Hapi.server({
@@ -50,7 +50,7 @@ const init = async () => {
             validate: {
                 payload: postSchema,
                 failAction: (request, h, error) => {
-                    throw new ValidationError(error.details);
+                    throw new Joi.ValidationError(error.details);
                 }
             }
         },

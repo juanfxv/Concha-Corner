@@ -16,16 +16,9 @@ const PostForm = () => {
     const [error, setError] = useState('');
     const [showToast, setShowToast] = useState(false);
 
-    const toggleToast = () => {
-        setShowToast(true);
-        setTimeout(() => {
-          setShowToast(false);
-        }, 3000);
-      };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        data.stars = parseInt(rating);
+        data.stars = rating;
         console.log(data);
 
         // Send the uploaded content to the backend
