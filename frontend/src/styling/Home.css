@@ -1,0 +1,52 @@
+.home-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fdf6e3;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Georgia', serif;
+    color: #333;
+  }
+  
+  .home-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #d2691e;
+    margin-bottom: 20px;
+    font-family: 'Garamond', serif;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    color: #d2691e;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-family: 'Garamond', serif;
+  }
+  
+  .home-section {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .home-section:last-child {
+    border-bottom: none;
+  }
+  
+  .contact-image {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .contact-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  

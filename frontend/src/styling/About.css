@@ -1,0 +1,51 @@
+.about-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fdf6e3;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Georgia', serif;
+  color: #333;
+}
+
+.about-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #d2691e;
+  margin-bottom: 20px;
+  font-family: 'Garamond', serif;
+}
+
+.about-section {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.about-section:last-child {
+  border-bottom: none;
+}
+
+.about-section p {
+  margin: 0;
+}
+
+.about-section:first-of-type {
+  font-style: italic;
+}
+
+.contact-image {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.contact-image img {
+  width: 48%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
