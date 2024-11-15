@@ -1,20 +1,28 @@
 .container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 40px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
+  position: relative;
+  max-width: 700px;
+  width: 90%;
+  margin: 30px auto;
+  padding: 30px 35px;
+  background-color: #fffaf0;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  font-family: 'Georgia', serif;
   color: #333;
+  overflow-wrap: break-word;
+  transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .container h1 {
   text-align: center;
   font-size: 2rem;
-  color: #444;
+  color: #d2691e;
   margin-bottom: 30px;
-  font-weight: 600;
+  font-family: 'Garamond', serif;
 }
 
 form {
@@ -28,16 +36,18 @@ textarea {
   padding: 12px 15px;
   font-size: 1rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
   width: 100%;
   box-sizing: border-box;
   background-color: #f9f9f9;
   transition: border-color 0.3s ease;
+  font-family: 'Georgia', serif;
+  color: #333;
 }
 
 input[type="text"]:focus,
 textarea:focus {
-  border-color: #66afe9;
+  border-color: #d2691e;
   outline: none;
 }
 
@@ -52,14 +62,15 @@ button[type="submit"] {
   background-color: #d2691e;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-weight: 500;
+  font-family: 'Georgia', serif;
 }
 
 button[type="submit"]:hover {
-  background-color: #b4571a;
+  background-color: #b5530c;
 }
 
 .toast-container {
@@ -67,4 +78,20 @@ button[type="submit"]:hover {
   top: 15px;
   right: 15px;
   z-index: 1000;
+}
+
+.rating-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.rating-label {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+  text-align: center;
+  font-family: 'Georgia', serif;
 }

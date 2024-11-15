@@ -6,9 +6,11 @@ const Review = mongoose.model("review", new mongoose.Schema({
     stars: Number,
     dateUploaded: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
         required: true
     }
+},{
+    versionKey: false
 }));
 
 module.exports = {

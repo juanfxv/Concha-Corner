@@ -16,24 +16,22 @@ const PostForm = () => {
     const [error, setError] = useState('');
     const [showToast, setShowToast] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         data.stars = rating;
-        console.log(data);
 
         // Send the uploaded content to the backend
-        axios.post('http://localhost:3001/api/upload', data)
-        .then(response => {
+        try {
+            const response = await axios.post('http://localhost:3001/api/upload', data)
             setError('');
             setShowToast(false);
             console.log('Upload successful:', response.data);
             window.location.reload();
-        })
-        .catch(error => {
+        } catch(error) {
             console.log(error);
             setError("Please enter all fields");
             setShowToast(true);
-        });
+        }
     };
 
 
