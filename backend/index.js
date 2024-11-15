@@ -14,10 +14,10 @@ const init = async () => {
 
     const server = Hapi.server({
         port: 3001,
-        host: 'localhost',
+        host: '0.0.0.0',
         routes: {
             cors: {
-                origin: ['http://localhost:3000'],
+                origin: ['*'],
                 headers: ["Accept", "Content-Type"],
                 additionalHeaders: ["X-Requested-With"],
                 credentials: true
@@ -30,9 +30,11 @@ const init = async () => {
         path: '/api/data',
         handler: async (request, h) => {
             try {
-                return await Review.find();
+                const reviews = await Review.find();
+                return h.response(reviews).code(200);
             } catch (error) {
-                console.log(`Error retrieving data: ${error.message}`);
+                console.log(error);
+                return h.response({ message: 'Internal Server Error' }).code(500);
             }
         },
     });
@@ -50,7 +52,10 @@ const init = async () => {
             validate: {
                 payload: postSchema,
                 failAction: (request, h, error) => {
-                    throw new Joi.ValidationError(error.details);
+                    return h.response({
+                        error: 'Bad Request',
+                        message: error.details.map(detail => detail.message).join(', ')
+                    }).code(400).takeover();
                 }
             }
         },
@@ -59,9 +64,49 @@ const init = async () => {
                 const newItem = request.payload;
                 const result = new Review(newItem);
                 await result.save();
-                return result;
+                return h.response(result).code(200);
             } catch (error) {
-                throw new Error(`Error retrieving data: ${error.message}`);
+                console.log(error);
+                return h.response({ message: 'Internal Server Error' }).code(500);
+            }
+        },
+    });
+
+    const idSchema = Joi.object({
+        id: Joi.string().required()
+    });
+
+    server.route({
+        method: 'PUT',
+        path: '/api/upload/{id}',
+        options: {
+            validate: {
+                params: idSchema,
+                payload: postSchema,
+                failAction: (request, h, error) => {
+                    return h.response({
+                        error: 'Bad Request',
+                        message: error.details.map(detail => detail.message).join(', ')
+                    }).code(400).takeover();
+                }
+            }
+        },
+        handler: async (request, h) => {
+            try {
+                const itemId = request.params.id;
+                const updatedData = request.payload;
+
+                const findReview = await Review.findByIdAndUpdate(itemId, updatedData, {
+                    new: true,
+                    runValidators: true
+                });
+                if (!findReview) return h.response({ message: "Review not found" }).code(404);
+
+                return h.response(findReview).code(200);
+            
+            } catch (error) {
+                console.log(error);
+                return h.response({ message: 'Internal Server Error' }).code(500);
             }
         },
     });
