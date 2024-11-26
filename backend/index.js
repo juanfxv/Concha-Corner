@@ -25,6 +25,7 @@ const init = async () => {
         }
     });
 
+    // GET route to fetch all reviews
     server.route({
         method: 'GET',
         path: '/api/data',
@@ -39,11 +40,12 @@ const init = async () => {
         },
     });
 
+    // POST route to create a new review
     const postSchema = Joi.object({
         name: Joi.string().required(),
         description: Joi.string().required(),
         stars: Joi.number().min(1).max(5).required()
-    })
+    });
 
     server.route({
         method: 'POST',
@@ -53,8 +55,8 @@ const init = async () => {
                 payload: postSchema,
                 failAction: (request, h, error) => {
                     return h.response({
-                        error: 'Bad Request',
-                        message: error.details.map(detail => detail.message).join(', ')
+                        message: 'Bad Request',
+                        error: error.details.map(detail => detail.message).join(', ')
                     }).code(400).takeover();
                 }
             }
@@ -64,7 +66,7 @@ const init = async () => {
                 const newItem = request.payload;
                 const result = new Review(newItem);
                 await result.save();
-                return h.response(result).code(200);
+                return h.response(result).code(201);
             } catch (error) {
                 console.log(error);
                 return h.response({ message: 'Internal Server Error' }).code(500);
@@ -72,6 +74,7 @@ const init = async () => {
         },
     });
 
+    // PUT route to update an existing review
     const idSchema = Joi.object({
         id: Joi.string().required()
     });
@@ -85,8 +88,8 @@ const init = async () => {
                 payload: postSchema,
                 failAction: (request, h, error) => {
                     return h.response({
-                        error: 'Bad Request',
-                        message: error.details.map(detail => detail.message).join(', ')
+                        message: 'Bad Request',
+                        error: error.details.map(detail => detail.message).join(', ')
                     }).code(400).takeover();
                 }
             }
@@ -103,7 +106,7 @@ const init = async () => {
                 if (!findReview) return h.response({ message: "Review not found" }).code(404);
 
                 return h.response(findReview).code(200);
-            
+
             } catch (error) {
                 console.log(error);
                 return h.response({ message: 'Internal Server Error' }).code(500);
@@ -111,12 +114,46 @@ const init = async () => {
         },
     });
 
+    // DELETE route to delete a review by ID
+    server.route({
+        method: 'DELETE',
+        path: '/api/upload/{id}',
+        options: {
+            validate: {
+                params: idSchema,
+                failAction: (request, h, error) => {
+                    return h.response({
+                        message: 'Bad Request',
+                        error: error.details.map(detail => detail.message).join(', ')
+                    }).code(400).takeover();
+                }
+            }
+        },
+        handler: async (request, h) => {
+            try {
+                const itemId = request.params.id;
+
+                // Delete the review by ID
+                const deletedReview = await Review.findByIdAndDelete(itemId);
+
+                if (!deletedReview) return h.response({ message: 'Review not found' }).code(404);
+
+                // Successfully deleted
+                return h.response({ message: 'Review deleted successfully' }).code(200);
+
+            } catch (error) {
+                console.log(error);
+                return h.response({ message: 'Internal Server Error' }).code(500);
+            }
+        },
+    });
+
+    // Start the server
     await server.start();
     console.log('Server running on %s', server.info.uri);
 };
 
 process.on('unhandledRejection', (err) => {
-
     console.log(err);
     process.exit(1);
 });
