@@ -1,8 +1,8 @@
 import './styling/App.css';
 import Navbar from "./components/Navbar"
-import Home from "./components/Home"
 import Footer from "./components/Footer"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from "./routes/Home"
 import About from './routes/About';
 import Menu from './routes/Menu';
 import Community from './routes/Community';
