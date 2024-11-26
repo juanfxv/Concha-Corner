@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import Rating from "./Rating"
+import React, { useState } from 'react';
+import Rating from "./Rating";
 import axios from "axios";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import "../styling/PostDetail.css";
 
 const PostDetail = ({ props: item }) => {
@@ -9,6 +9,7 @@ const PostDetail = ({ props: item }) => {
   const [editedItem, setEditedItem] = useState(item);
   const [rating, setRating] = useState(editedItem.stars);
 
+  // Handle save for editing
   const handleSave = async () => {
     try {
       editedItem.stars = rating;
@@ -22,6 +23,7 @@ const PostDetail = ({ props: item }) => {
     }
   };
 
+  // Handle changes in input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedItem((prevItem) => ({
@@ -30,16 +32,30 @@ const PostDetail = ({ props: item }) => {
     }));
   };
 
-  const handleCancel = (e) => {
+  // Handle cancel editing
+  const handleCancel = () => {
     setEditedItem(item);
     setRating(item.stars);
     setIsEditing(false);
-  }
+  };
+
+  // Handle delete review
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:3001/api/upload/${item._id}`);
+      window.location.reload();  // Reload to refresh the list after deleting
+    } catch (error) {
+      console.error("Failed to delete item:", error);
+    }
+  };
 
   return (
     <div key={item._id} className="item-container">
       <div className="edit-icon" onClick={() => setIsEditing(true)}>
         <FaEdit />
+      </div>
+      <div className="delete-icon" onClick={handleDelete}>
+        <FaTrashAlt />
       </div>
       <h2>{item.name}</h2>
       <p className="description">{item.description}</p>
