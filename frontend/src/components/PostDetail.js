@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Rating from "./Rating";
 import axios from "axios";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
@@ -8,6 +8,7 @@ const PostDetail = ({ props: item }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedItem, setEditedItem] = useState(item);
   const [rating, setRating] = useState(editedItem.stars);
+  const descriptionRef = useRef(null);
 
   // Handle save for editing
   const handleSave = async () => {
@@ -23,6 +24,15 @@ const PostDetail = ({ props: item }) => {
     }
   };
 
+  // Adjust textarea height dynamically
+  const adjustTextareaHeight = () => {
+    if (descriptionRef.current) {
+      descriptionRef.current.style.height = "auto"; // Reset height
+      descriptionRef.current.style.height = `${descriptionRef.current.scrollHeight}px`; // Adjust to content
+    }
+  };
+
+
   // Handle changes in input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,6 +40,7 @@ const PostDetail = ({ props: item }) => {
       ...prevItem,
       [name]: value,
     }));
+    if (name === "description") adjustTextareaHeight(); // Adjust height when description changes
   };
 
   // Handle cancel editing
@@ -49,13 +60,20 @@ const PostDetail = ({ props: item }) => {
     }
   };
 
+  // Adjust height when the component mounts or `isEditing` becomes true
+  useEffect(() => {
+    if (isEditing) adjustTextareaHeight();
+  }, [isEditing]);
+
   return (
     <div key={item._id} className="item-container">
-      <div className="edit-icon" onClick={() => setIsEditing(true)}>
-        <FaEdit />
-      </div>
-      <div className="delete-icon" onClick={handleDelete}>
-        <FaTrashAlt />
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div className="icons" onClick={() => setIsEditing(true)}>
+          <FaEdit />
+        </div>
+        <div className="icons" onClick={handleDelete}>
+          <FaTrashAlt />
+        </div>
       </div>
       <h2>{item.name}</h2>
       <p className="description">{item.description}</p>
@@ -95,6 +113,7 @@ const PostDetail = ({ props: item }) => {
                 name="description"
                 value={editedItem.description}
                 onChange={handleChange}
+                ref={descriptionRef}
               />
             </label>
             <div className="rating-container">

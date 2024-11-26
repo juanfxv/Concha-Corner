@@ -17,17 +17,17 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.edit-icon {
-  position: absolute;
-  top: 15px;
-  right: 15px;
+.icons {
+  position: relative;
+  display: inline-block;
+  margin-right: 15px;
   font-size: 1.3rem;
   color: #d2691e;
   cursor: pointer;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.edit-icon:hover {
+.icons:hover {
   color: #b5530c;
   transform: scale(1.1);
 }
